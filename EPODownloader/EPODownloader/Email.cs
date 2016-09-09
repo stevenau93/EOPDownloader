@@ -16,6 +16,7 @@ namespace EPODownloader
             {
                 using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
                 {
+                    
                     connection.Open();
                     transaction = connection.BeginTransaction();
                     string sql = "INSERT INTO dbo.Email (message_id,subject,content,date,cc,path)"

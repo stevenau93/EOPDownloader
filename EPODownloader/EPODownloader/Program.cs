@@ -6,13 +6,14 @@ using Limilabs.Mail.MIME;
 using Limilabs.Mail.Headers;
 using System.Threading;
 using System.IO;
+using System.Linq;
 
 namespace EPODownloader
 {
     class Program
     {
-        static string Username = "...";
-        static string Password = "...";
+        static string Username = "stevenau1993";
+        static string Password = "Passnhutren93";
 
         static void Main(string[] args)
         {
@@ -34,8 +35,14 @@ namespace EPODownloader
                 {
                     imap.Connect("imap.gmail.com", 993, true);
                     imap.UseBestLogin(Username, Password);
+                 
                     imap.SelectInbox();
+                
                     List<long> uids = imap.Search(Flag.Unseen);
+                    long last = imap.GetAll().Last();
+                 
+                        
+
                     int count = 0;
                     if (uids.Count > 0)
                     {
@@ -43,6 +50,7 @@ namespace EPODownloader
                         {
                             IMail email = new MailBuilder().CreateFromEml(imap.GetMessageByUID(uid));
                             var eml = imap.GetMessageByUID(uid);
+                            
                             item.Subject = email.Subject;
                             item.MessageID = email.MessageID;
                             item.Date = Convert.ToDateTime(email.Date);
@@ -90,6 +98,7 @@ namespace EPODownloader
                                 count++;
                                 Console.WriteLine(" - Inserted email " + item.Subject + " - " + item.Date);
                                 imap.MarkMessageSeenByUID(uid);
+                                imap.GmailLabelMessageByUID(last, FolderFlag.XStarred.Name);
                             }
                         }
 
@@ -100,8 +109,7 @@ namespace EPODownloader
                 catch
                 {
                     Console.WriteLine("Internet problem occured.Please check your internet connection.");
-                    Console.WriteLine("Press any key to try again.");
-                    Console.ReadKey();
+                    Thread.Sleep(5000);
                     GetDataFromMail();
                 }
             }
