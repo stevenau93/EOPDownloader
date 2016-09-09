@@ -1,0 +1,21 @@
+MIME-Version: 1.0
+Received: by 10.25.154.143 with HTTP; Thu, 8 Sep 2016 19:34:17 -0700 (PDT)
+Date: Fri, 9 Sep 2016 09:34:17 +0700
+Delivered-To: stevenau1993@gmail.com
+Message-ID: <CA++=-qhwhbjdf_3hkPo+n9hayT4ZKnH2N2deKC-Nw9mGTPjmnQ@mail.gmail.com>
+Subject: test 2
+From: Phat Au <stevenau1993@gmail.com>
+To: Phat Au <stevenau1993@gmail.com>
+Content-Type: multipart/alternative; boundary=001a11402f1ca4d86d053c09fba2
+
+--001a11402f1ca4d86d053c09fba2
+Content-Type: text/plain; charset=UTF-8
+
+asd
+
+--001a11402f1ca4d86d053c09fba2
+Content-Type: text/html; charset=UTF-8
+
+<div dir="ltr">asd</div>
+
+--001a11402f1ca4d86d053c09fba2--
