@@ -34,14 +34,9 @@ namespace EPODownloader
                 try
                 {
                     imap.Connect("imap.gmail.com", 993, true);
-                    imap.UseBestLogin(Username, Password);
-                 
-                    imap.SelectInbox();
-                
-                    List<long> uids = imap.Search(Flag.Unseen);
-                    long last = imap.GetAll().Last();
-                 
-                        
+                    imap.UseBestLogin(Username, Password);        
+                    imap.SelectInbox();               
+                    List<long> uids = imap.Search(Flag.Unseen);                       
 
                     int count = 0;
                     if (uids.Count > 0)
@@ -98,7 +93,7 @@ namespace EPODownloader
                                 count++;
                                 Console.WriteLine(" - Inserted email " + item.Subject + " - " + item.Date);
                                 imap.MarkMessageSeenByUID(uid);
-                                imap.GmailLabelMessageByUID(last, FolderFlag.XStarred.Name);
+                                imap.GmailLabelMessageByUID(uid, FolderFlag.XStarred.Name);
                             }
                         }
 

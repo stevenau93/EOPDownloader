@@ -12,11 +12,10 @@ namespace EPODownloader
         public static int InsertEmail(EmailItem item)
         {
             SqlTransaction transaction = null;
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
-                {
-                    
+            using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
+            {         
+                try
+                {               
                     connection.Open();
                     transaction = connection.BeginTransaction();
                     string sql = "INSERT INTO dbo.Email (message_id,subject,content,date,cc,path)"
@@ -66,12 +65,13 @@ namespace EPODownloader
                     int id = Convert.ToInt32(cmd.ExecuteScalar());
                     transaction.Commit();
                     return id;
+
                 }
-            }
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-                return 0;
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return 0;
+                }
             }
         }
 
