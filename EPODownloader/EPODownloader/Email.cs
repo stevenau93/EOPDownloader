@@ -9,26 +9,21 @@ namespace EPODownloader
 {
     class Email
     {
-
         public static int InsertEmail(EmailItem item)
         {
             SqlTransaction transaction = null;
-            using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
                 {
                     connection.Open();
                     transaction = connection.BeginTransaction();
-
                     string sql = "INSERT INTO dbo.Email (message_id,subject,content,date,cc,path)"
                      + "  VALUES(@message_id,@subject,@content,@date,@cc,@path);SELECT @@IDENTITY";
-
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     cmd.Transaction = transaction;
-
                     cmd.Parameters.AddWithValue("@message_id", item.MessageID);
                     cmd.Parameters.AddWithValue("@date", item.Date);
-
 
                     if (String.IsNullOrEmpty(item.Subject))
                     {
@@ -71,24 +66,21 @@ namespace EPODownloader
                     transaction.Commit();
                     return id;
                 }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return 0;
-                }
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                return 0;
             }
         }
 
-
         public static bool InsertAttachment(AttachmentItem item)
         {
-        
-            using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
+            try
             {
-                try
+                using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
                 {
                     connection.Open();
-          
                     string sql = "INSERT INTO dbo.Attachment(email_id,attachment_name,content_type,size,temp_name,path)"
                         + "VALUES(@email_id,@attachment_name,@content_type,@size,@temp_name,@path)";
                     SqlCommand cmd = new SqlCommand(sql, connection);
@@ -144,10 +136,10 @@ namespace EPODownloader
                     cmd.ExecuteNonQuery();
                     return true;
                 }
-                catch
-                {
-                    return false;
-                }
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -155,7 +147,6 @@ namespace EPODownloader
         {
             using (SqlConnection connection = new SqlConnection(Config.ConnectionString))
             {
-                string CheckGUID;
                 connection.Open();
                 string sql = @"SELECT id
                               FROM Attachment
@@ -165,13 +156,7 @@ namespace EPODownloader
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
-                    reader.Read();
-
-                    CheckGUID = reader["id"].ToString();
-                    if (!String.IsNullOrEmpty(reader["id"].ToString()))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
             return false;
